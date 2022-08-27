@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { RequestValidationError } from "../errors/requestValidationError";
-import { DatabaseConnectionError } from "../errors/databaseConnectionError";
+import { CustomError } from "../errors/customError";
 
 // Reponse normalization step 
 // Normalize error response going back to the client
@@ -11,20 +10,14 @@ export const errorHandler = (
     req: Request, 
     res: Response, 
     next: NextFunction
-) =>{
-    if(err instanceof RequestValidationError){
-        // Conver the validation error into common response error 
-        // Singular error structure {message:"" , field: Optional}
-        // Common resposne structure {errors: [Array of singular errors]}
+) => {
+    // Convert the validation error into common response error 
+    // Singular error structure {message:"" , field: Optional}
+    // Common resposne structure {errors: [Array of singular errors]}
+    // Serializing done in objects
 
-        const errorArray = err.errors.map(error=>{
-            return {message: error.msg, field: error.param}
-        });
-        return res.status(400).send({ errors: errorArray })
-    }
-
-    if(err instanceof DatabaseConnectionError){
-        return res.status(500).send({ errors:[{ message:err.reason }]})
+    if(err instanceof CustomError){
+        return res.status(err.statusCode).send({ errors: err.serializeErrors() })
     }
 
     res.status(400).send({

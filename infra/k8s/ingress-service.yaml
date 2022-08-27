@@ -7,6 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
+    # hostfile needs to be modified if this is to be run locally - so that it looks for local address
     - host: ticketing.dev
       http:
         paths:
