@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { MongooseDocumentMiddleware } from "mongoose";
+import { Password } from "../services/password"
 
 //Type checking interface
 interface UserAttrs {
@@ -6,8 +7,14 @@ interface UserAttrs {
     password: string;
 }
 
-interface UserModel extends mongoose.Model<any> {
-    buiLd(attrs: UserAttrs): any;
+// Output Type interface of mongoose User model
+interface UserModel extends mongoose.Model<UserDoc> {
+    build(attrs: UserAttrs): UserDoc;
+}
+
+interface UserDoc extends mongoose.Document {
+    email: String;
+    password: String;
 }
 
 const userSchema = new mongoose.Schema({
@@ -21,10 +28,20 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+// Middleware for mongoose save function
+userSchema.pre("save", async function(done){
+    // Only rehash when password is modified
+    if(this.isModified("password")){
+        const hashedPassword = await Password.toHash(this.get("password"));
+        this.set("password", hashedPassword);
+    }
+    done();
+});
+
 userSchema.statics.build = (attrs: UserAttrs) => {
     return new User(attrs);
 };
 
-const User = mongoose.model<any, UserModel>("User", userSchema);
+const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
 
 export { User };
