@@ -15,6 +15,15 @@ spec:
       containers:
         - name: auth
           image: blee/auth
+          # This is to load up the secret within the cluster and inject it to the env of the auth pod 
+          # Look at the memo for the command to create the secret in the cluster
+          # Can also do kubectl describe pod <POD NAME> to see if the ENV value is loaded correctly
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
