@@ -13,8 +13,8 @@ interface UserModel extends mongoose.Model<UserDoc> {
 }
 
 interface UserDoc extends mongoose.Document {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 const userSchema = new mongoose.Schema(
