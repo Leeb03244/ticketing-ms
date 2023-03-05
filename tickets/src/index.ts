@@ -7,13 +7,13 @@ const start = async () => {
     throw new Error("MONGO_DB_URI must be defined");
   try {
     await mongoose.connect(process.env.MONGO_DB_URI);
-    console.log("Auth service connected to MongoDB");
+    console.log("Tickets service connected to MongoDB");
   } catch (err) {
     console.error(err);
   }
 
   app.listen(3000, () => {
-    console.log("Auth service listening on port 3000");
+    console.log("Tickets service listening on port 3000");
   });
 };
 
