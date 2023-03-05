@@ -7,8 +7,8 @@ import { currentUserRouter } from "./routes/currentuser";
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
 import { signUpRouter } from "./routes/signup";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/notFoundError";
+import { errorHandler } from "@blee-org/common";
+import { NotFoundError } from "@blee-org/common";
 
 const app = express();
 // We are behind Nginx proxy so trust it

@@ -1,10 +1,10 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
 import { Request, Response } from "express";
-import { RequestValidationError } from "../errors/requestValidationError";
-import { validateRequest } from "../middlewares/validate-request";
+import { RequestValidationError } from "@blee-org/common";
+import { validateRequest } from "@blee-org/common";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/badRequestError";
+import { BadRequestError } from "@blee-org/common";
 import { Password } from "../services/password";
 import jwt from "jsonwebtoken";
 
